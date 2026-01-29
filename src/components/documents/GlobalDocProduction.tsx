@@ -64,8 +64,8 @@ export function GlobalDocProduction({ projects, companies, concessionaires, stat
                 {(selectedProject && selectedCompany) || isStandalone ? (
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                            <Button variant="ghost" onClick={handleExitMode}>
-                                <ArrowLeft className="mr-2 h-4 w-4" /> Voltar para Seleção
+                            <Button variant="ghost" onClick={handleExitMode} className="text-muted-foreground hover:text-destructive transition-colors">
+                                <ArrowLeft className="mr-2 h-4 w-4" /> {isStandalone ? "Sair do Modo Avulso" : "Voltar para Projetos"}
                             </Button>
                             <div className="text-sm font-medium text-muted-foreground">
                                 {isStandalone ? (

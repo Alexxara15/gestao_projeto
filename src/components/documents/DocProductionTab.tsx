@@ -68,8 +68,8 @@ export function DocProductionTab({ project, company, concessionaires, states, in
             {view === 'form' && selectedTemplate ? (
                 <div>
                     <div className="mb-4">
-                        <Button variant="link" onClick={handleCancel} className="pl-0 text-muted-foreground">
-                            <ArrowLeft className="mr-2 h-4 w-4" /> Voltar para seleção
+                        <Button variant="link" onClick={handleCancel} className="pl-0 text-muted-foreground hover:text-primary">
+                            <ArrowLeft className="mr-2 h-4 w-4" /> Trocar Modelo
                         </Button>
                     </div>
                     <DocForm
