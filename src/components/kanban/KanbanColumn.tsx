@@ -20,7 +20,7 @@ export function KanbanColumn({ id, title, projects, companies, onRemoveProject }
     return (
         <div
             ref={setNodeRef}
-            className="flex-shrink-0 w-[320px] md:w-[350px] bg-slate-100/50 rounded-xl p-4 flex flex-col gap-4 border border-slate-200 h-full max-h-full shadow-sm"
+            className="flex-shrink-0 w-[320px] md:w-[350px] bg-slate-100/50 rounded-xl p-4 flex flex-col gap-4 border border-slate-200 shadow-sm"
         >
             <div className="flex items-center justify-between flex-shrink-0">
                 <h3 className="font-semibold text-slate-700">{title}</h3>
@@ -29,7 +29,7 @@ export function KanbanColumn({ id, title, projects, companies, onRemoveProject }
                 </span>
             </div>
 
-            <div className="flex-1 flex flex-col gap-3 min-h-[0] overflow-y-auto pr-1 custom-scrollbar">
+            <div className="flex-1 flex flex-col gap-3 min-h-[0]">
                 {projects.map((project) => (
                     <KanbanCard
                         key={project.id}

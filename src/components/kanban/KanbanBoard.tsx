@@ -109,7 +109,7 @@ export function KanbanBoard({ initialProjects, companies }: KanbanBoardProps) {
             onDragOver={handleDragOver}
             onDragEnd={handleDragEnd}
         >
-            <div className="flex flex-col md:flex-row gap-6 h-auto md:h-[calc(100vh-220px)] overflow-x-auto overflow-y-hidden pb-4 items-start md:items-stretch px-2">
+            <div className="flex flex-row gap-6 pb-4 items-start px-2 overflow-x-auto">
                 {COLUMNS.map((col) => (
                     <KanbanColumn
                         key={col.id}
