@@ -28,14 +28,38 @@ export function ProjectWizardForm({ companies, states, concessionaires }: Projec
         poleCount: '',
     });
 
-    const nextStep = () => setStep(s => Math.min(s + 1, 3));
-    const prevStep = () => setStep(s => Math.max(s - 1, 1));
+    // const nextStep = () => setStep(s => Math.min(s + 1, 3)); // Removed duplicate
+    // const prevStep = () => setStep(s => Math.max(s - 1, 1)); // Removed duplicate
 
-    const [state, formAction] = useActionState(createProject, { message: '' });
+    const [state, formAction, isPending] = useActionState(createProject, { message: '' });
 
     const updateField = (field: string, value: string) => {
         setFormData(prev => ({ ...prev, [field]: value }));
     };
+
+    const validateStep = (currentStep: number) => {
+        if (currentStep === 1) {
+            if (!formData.companyId) return "Selecione uma empresa";
+            if (!formData.stateId) return "Selecione um estado";
+            if (!formData.city) return "Digite a cidade";
+            if (!formData.concessionaireId) return "Selecione uma concessionária";
+        }
+        if (currentStep === 2) {
+            if (!formData.poleCount) return "Informe a quantidade de postes";
+        }
+        return null;
+    };
+
+    const nextStep = () => {
+        const error = validateStep(step);
+        if (error) {
+            alert(error); // Simple feedback for now, could be better UI
+            return;
+        }
+        setStep(s => Math.min(s + 1, 3));
+    };
+
+    const prevStep = () => setStep(s => Math.max(s - 1, 1));
 
     // Filter concessionaires by selected state if possible, or just list all
     const filteredConcessionaires = formData.stateId
@@ -44,7 +68,7 @@ export function ProjectWizardForm({ companies, states, concessionaires }: Projec
 
     return (
         <div className="max-w-3xl mx-auto space-y-6">
-            {/* Header */}
+            {/* Header ... */}
             <div className="flex items-center space-x-4">
                 <Button variant="ghost" size="icon" asChild>
                     <Link href="/projetos">
@@ -57,7 +81,7 @@ export function ProjectWizardForm({ companies, states, concessionaires }: Projec
                 </div>
             </div>
 
-            {/* Progress Steps */}
+            {/* Progress Steps ... */}
             <div className="flex justify-between relative py-4">
                 <div className="absolute top-1/2 left-0 w-full h-0.5 bg-slate-200 -z-10" />
                 {[1, 2, 3].map((s) => (
@@ -167,6 +191,12 @@ export function ProjectWizardForm({ companies, states, concessionaires }: Projec
 
                         {step === 3 && (
                             <div className="space-y-4">
+                                {state?.message && (
+                                    <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm">
+                                        {state.message}
+                                    </div>
+                                )}
+
                                 <div className="bg-slate-50 p-4 rounded-lg flex items-start space-x-4">
                                     <FileText className="h-6 w-6 text-blue-600 mt-1" />
                                     <div>
@@ -198,13 +228,16 @@ export function ProjectWizardForm({ companies, states, concessionaires }: Projec
 
                     <CardFooter className="flex justify-between">
                         {step > 1 ? (
-                            <Button type="button" variant="outline" onClick={prevStep}>Voltar</Button>
+                            <Button type="button" variant="outline" onClick={prevStep} disabled={isPending}>Voltar</Button>
                         ) : <div></div>}
 
                         {step < 3 ? (
                             <Button type="button" onClick={nextStep}>Próximo <ArrowRight className="ml-2 h-4 w-4" /></Button>
                         ) : (
-                            <Button type="submit">Criar Projeto <Check className="ml-2 h-4 w-4" /></Button>
+                            <Button type="submit" disabled={isPending}>
+                                {isPending ? 'Criando...' : 'Criar Projeto'}
+                                {!isPending && <Check className="ml-2 h-4 w-4" />}
+                            </Button>
                         )}
                     </CardFooter>
                 </form>
