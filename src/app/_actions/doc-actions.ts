@@ -25,9 +25,18 @@ function formatDateFull(dateString: string): string {
     return `${day} de ${months[month - 1]} de ${year}`;
 }
 
-export async function generateDocument(projectId: string, templateId: string, templateName: string, formData: Record<string, any>) {
+export async function generateDocument(projectId: string | null, templateId: string, templateName: string, formData: Record<string, any>) {
     // 1. Determine new version
-    const existingDocs = await db.getGeneratedDocuments(projectId);
+    let existingDocs: GeneratedDocument[] = [];
+
+    if (projectId) {
+        existingDocs = await db.getGeneratedDocuments(projectId);
+    } else {
+        // For standalone, we get ALL docs and filter for standalone ones (where projectId is null)
+        const allDocs = await db.getAllGeneratedDocuments();
+        existingDocs = allDocs.filter(d => d.projectId === null);
+    }
+
     const sameTemplateDocs = existingDocs.filter(d => d.templateId === templateId);
     const version = sameTemplateDocs.length + 1;
 
@@ -114,10 +123,10 @@ export async function generateDocument(projectId: string, templateId: string, te
         });
 
         // 5. Save File
-        const companyName = formData['empresa_razao_social'] || 'EMPRESA';
+        const companyName = formData['empresa_razao_social'] || 'AVULSO';
         const safeCompanyName = companyName.replace(/[^a-zA-Z0-9]/g, '').toUpperCase().substring(0, 15);
         const dateStr = new Date().toISOString().split('T')[0].replace(/-/g, '');
-        const fileName = `ENEL_CE_Solicitacao_Compartilhamento_${safeCompanyName}_v${version}_${dateStr}.docx`;
+        const fileName = `ENEL_CE_Doc_${safeCompanyName}_v${version}_${dateStr}.docx`;
 
         // Ensure directory exists
         const outputDir = path.resolve(process.cwd(), 'public/generated-docs');
@@ -131,20 +140,23 @@ export async function generateDocument(projectId: string, templateId: string, te
         // 6. Persist to DB
         const newDoc: GeneratedDocument = {
             id: crypto.randomUUID(),
-            projectId,
+            projectId, // Can be null
             templateId,
             templateName,
             data: formData, // Save ORIGINAL raw data for re-editing
             createdAt: new Date().toISOString(),
             version: version,
             createdBy: 'Usuário Demo',
-            fileUrl: `/generated-docs/${fileName}`
+            fileUrl: `/generated-docs/${fileName}`,
+            context: projectId ? 'PROJECT' : 'STANDALONE'
         };
 
         await db.addGeneratedDocument(newDoc);
 
         revalidatePath(`/documentos`);
-        revalidatePath(`/projetos/${projectId}`);
+        if (projectId) {
+            revalidatePath(`/projetos/${projectId}`);
+        }
 
         return { success: true, document: newDoc };
 

@@ -47,7 +47,7 @@ export type Project = {
 
 export type GeneratedDocument = {
     id: string;
-    projectId: string;
+    projectId: string | null; // Nullable for standalone docs
     templateId: string;
     templateName: string;
     data: Record<string, any>; // Snapshot of form data
@@ -55,6 +55,7 @@ export type GeneratedDocument = {
     createdAt: string;
     version: number;
     createdBy: string; // 'User' for now
+    context?: 'PROJECT' | 'STANDALONE';
 };
 
 type Schema = {

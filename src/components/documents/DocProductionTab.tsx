@@ -10,8 +10,8 @@ import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 
 interface DocProductionTabProps {
-    project: Project;
-    company: Company;
+    project?: Project | null;
+    company?: Company | null;
     concessionaires: { id: string, name: string }[];
     states: { id: string, name: string }[];
     initialDocuments: GeneratedDocument[];

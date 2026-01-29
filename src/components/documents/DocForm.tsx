@@ -12,8 +12,8 @@ import { Project, Company } from "@/lib/db";
 
 interface DocFormProps {
     template: DocumentTemplate;
-    project: Project;
-    company?: Company;
+    project?: Project | null;
+    company?: Company | null;
     initialData?: Record<string, any>;
     onCancel: () => void;
     onSuccess: () => void;
@@ -33,19 +33,32 @@ export function DocForm({ template, project, company, initialData, onCancel, onS
         const initial: Record<string, string> = {};
         template.fields.forEach(field => {
             if (field.defaultValue) {
-                // Simple variable replacement logic
                 let value = field.defaultValue;
-                if (value.includes('{{project.city}}')) value = value.replace('{{project.city}}', project.city);
-                if (value.includes('{{project.poleCount}}')) value = value.replace('{{project.poleCount}}', project.poleCount.toString());
-                if (value.includes('{{today}}')) value = new Date().toISOString().split('T')[0];
-                if (company) {
-                    if (value.includes('{{company.name}}')) value = value.replace('{{company.name}}', company.name);
-                    if (value.includes('{{company.cnpj}}')) value = value.replace('{{company.cnpj}}', company.cnpj);
-                    if (value.includes('{{company.techResp}}')) value = value.replace('{{company.techResp}}', company.techResp);
-                    if (value.includes('{{company.email}}')) value = value.replace('{{company.email}}', company.email);
-                    if (value.includes('{{company.address}}')) value = value.replace('{{company.address}}', company.address);
+                let resolved = false;
+
+                // Attempt Project replacements
+                if (project) {
+                    if (value.includes('{{project.city}}')) { value = value.replace('{{project.city}}', project.city); resolved = true; }
+                    if (value.includes('{{project.poleCount}}')) { value = value.replace('{{project.poleCount}}', project.poleCount.toString()); resolved = true; }
                 }
-                initial[field.id] = value;
+
+                // Global replacements
+                if (value.includes('{{today}}')) { value = new Date().toISOString().split('T')[0]; resolved = true; }
+
+                // Attempt Company replacements
+                if (company) {
+                    if (value.includes('{{company.name}}')) { value = value.replace('{{company.name}}', company.name); resolved = true; }
+                    if (value.includes('{{company.cnpj}}')) { value = value.replace('{{company.cnpj}}', company.cnpj); resolved = true; }
+                    if (value.includes('{{company.techResp}}')) { value = value.replace('{{company.techResp}}', company.techResp); resolved = true; }
+                    if (value.includes('{{company.email}}')) { value = value.replace('{{company.email}}', company.email); resolved = true; }
+                    if (value.includes('{{company.address}}')) { value = value.replace('{{company.address}}', company.address); resolved = true; }
+                }
+
+                // If resolved, or if it didn't look like a variable to begin with, set it.
+                // Otherwise (if it still contains curly braces), skip setting it so it shows as empty.
+                if (!value.includes('{{')) {
+                    initial[field.id] = value;
+                }
             }
         });
         setFormData(initial);
@@ -59,7 +72,7 @@ export function DocForm({ template, project, company, initialData, onCancel, onS
         e.preventDefault();
         setLoading(true);
         try {
-            const result = await generateDocument(project.id, template.id, template.name, formData);
+            const result = await generateDocument(project?.id || null, template.id, template.name, formData);
 
             // Auto-download
             if (result && result.document && result.document.fileUrl) {

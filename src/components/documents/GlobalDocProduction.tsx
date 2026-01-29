@@ -20,33 +20,61 @@ interface GlobalDocProductionProps {
 export function GlobalDocProduction({ projects, companies, concessionaires, states, allGeneratedDocuments }: GlobalDocProductionProps) {
     const [selectedProject, setSelectedProject] = useState<Project | null>(null);
     const [docToEdit, setDocToEdit] = useState<GeneratedDocument | null>(null);
+    const [isStandalone, setIsStandalone] = useState(false);
 
     // Derived state
     const selectedCompany = selectedProject ? companies.find(c => c.id === selectedProject.companyId) : null;
-    const projectDocs = selectedProject ? allGeneratedDocuments.filter(d => d.projectId === selectedProject.id) : [];
+
+    // Filter docs based on mode
+    let projectDocs: GeneratedDocument[] = [];
+    if (selectedProject) {
+        projectDocs = allGeneratedDocuments.filter(d => d.projectId === selectedProject.id);
+    } else if (isStandalone) {
+        projectDocs = allGeneratedDocuments.filter(d => d.projectId === null);
+    }
 
     const handleEditFromHistory = (doc: GeneratedDocument) => {
-        // 1. Find the project for this doc
-        const project = projects.find(p => p.id === doc.projectId);
-        if (project) {
-            setSelectedProject(project);
-            setDocToEdit(doc);
+        if (doc.projectId) {
+            // Project Document
+            const project = projects.find(p => p.id === doc.projectId);
+            if (project) {
+                setIsStandalone(false);
+                setSelectedProject(project);
+                setDocToEdit(doc);
+            } else {
+                alert('Projeto associado ao documento não encontrado.');
+            }
         } else {
-            alert('Projeto associado ao documento não encontrado.');
+            // Standalone Document
+            setSelectedProject(null);
+            setIsStandalone(true);
+            setDocToEdit(doc);
         }
+    };
+
+    const handleExitMode = () => {
+        setSelectedProject(null);
+        setIsStandalone(false);
+        setDocToEdit(null);
     };
 
     return (
         <div className="grid grid-cols-1 2xl:grid-cols-4 gap-8">
             <div className="2xl:col-span-3 space-y-6">
-                {selectedProject && selectedCompany ? (
+                {(selectedProject && selectedCompany) || isStandalone ? (
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                            <Button variant="ghost" onClick={() => { setSelectedProject(null); setDocToEdit(null); }}>
-                                <ArrowLeft className="mr-2 h-4 w-4" /> Trocar Projeto
+                            <Button variant="ghost" onClick={handleExitMode}>
+                                <ArrowLeft className="mr-2 h-4 w-4" /> Voltar para Seleção
                             </Button>
                             <div className="text-sm font-medium text-muted-foreground">
-                                Projeto: <span className="text-slate-900">{selectedProject.number}</span> - <span className="text-slate-900">{selectedCompany.name}</span>
+                                {isStandalone ? (
+                                    <span className="text-slate-900 font-bold bg-amber-100 px-2 py-1 rounded text-amber-800 border border-amber-200">
+                                        Modo Avulso (Sem Projeto)
+                                    </span>
+                                ) : (
+                                    <>Projeto: <span className="text-slate-900">{selectedProject?.number}</span> - <span className="text-slate-900">{selectedCompany?.name}</span></>
+                                )}
                             </div>
                         </div>
 
@@ -63,21 +91,35 @@ export function GlobalDocProduction({ projects, companies, concessionaires, stat
                     <div className="space-y-8">
                         <div className="mb-8 space-y-2">
                             <h2 className="text-2xl font-bold tracking-tight">Produção de Documentos</h2>
-                            <p className="text-muted-foreground">Selecione um projeto para iniciar a geração ou acesse o histórico ao lado.</p>
+                            <p className="text-muted-foreground">Selecione um projeto para iniciar ou crie um documento avulso.</p>
                         </div>
 
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Selecionar Projeto</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ProjectSelector
-                                    projects={projects}
-                                    companies={companies}
-                                    onSelectProject={setSelectedProject}
-                                />
-                            </CardContent>
-                        </Card>
+                        <div className="grid md:grid-cols-2 gap-6">
+                            <Card className="hover:border-primary transition-colors cursor-pointer group" onClick={() => setIsStandalone(true)}>
+                                <CardHeader>
+                                    <CardTitle className="text-blue-900 group-hover:text-blue-700">Documento Avulso</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-sm text-muted-foreground mb-4">
+                                        Gera documentos sem vincular a um projeto específico. Ideal para rascunhos ou solicitações rápidas.
+                                    </p>
+                                    <Button variant="secondary" className="w-full">Criar Avulso</Button>
+                                </CardContent>
+                            </Card>
+
+                            <Card className="md:col-span-2 border-dashed bg-slate-50/50">
+                                <CardHeader>
+                                    <CardTitle>Selecionar Projeto Existente</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <ProjectSelector
+                                        projects={projects}
+                                        companies={companies}
+                                        onSelectProject={setSelectedProject}
+                                    />
+                                </CardContent>
+                            </Card>
+                        </div>
                     </div>
                 )}
             </div>
