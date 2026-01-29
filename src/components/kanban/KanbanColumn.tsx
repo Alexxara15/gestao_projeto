@@ -20,7 +20,7 @@ export function KanbanColumn({ id, title, projects, companies, onRemoveProject }
     return (
         <div
             ref={setNodeRef}
-            className="flex-shrink-0 w-[320px] md:w-[350px] bg-slate-100/50 rounded-xl p-4 flex flex-col gap-4 border border-slate-200 shadow-sm"
+            className="flex-1 min-w-[250px] bg-slate-100/50 rounded-xl p-4 flex flex-col gap-4 border border-slate-200 shadow-sm"
         >
             <div className="flex items-center justify-between flex-shrink-0">
                 <h3 className="font-semibold text-slate-700">{title}</h3>
