@@ -64,10 +64,7 @@ export function GlobalDocProduction({ projects, companies, concessionaires, stat
                 {(selectedProject && selectedCompany) || isStandalone ? (
                     <div className="space-y-4">
                         <div className="flex items-center justify-between">
-                            <Button variant="ghost" onClick={handleExitMode} className="text-muted-foreground hover:text-destructive transition-colors">
-                                <ArrowLeft className="mr-2 h-4 w-4" /> {isStandalone ? "Sair do Modo Avulso" : "Voltar para Projetos"}
-                            </Button>
-                            <div className="text-sm font-medium text-muted-foreground">
+                            <div className="flex-1 text-sm font-medium text-muted-foreground text-right">
                                 {isStandalone ? (
                                     <span className="text-slate-900 font-bold bg-amber-100 px-2 py-1 rounded text-amber-800 border border-amber-200">
                                         Modo Avulso (Sem Projeto)
@@ -85,6 +82,7 @@ export function GlobalDocProduction({ projects, companies, concessionaires, stat
                             states={states}
                             initialDocuments={projectDocs}
                             docToEdit={docToEdit}
+                            onExit={handleExitMode}
                         />
                     </div>
                 ) : (

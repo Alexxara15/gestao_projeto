@@ -16,9 +16,10 @@ interface DocProductionTabProps {
     states: { id: string, name: string }[];
     initialDocuments: GeneratedDocument[];
     docToEdit?: GeneratedDocument | null;
+    onExit?: () => void;
 }
 
-export function DocProductionTab({ project, company, concessionaires, states, initialDocuments, docToEdit }: DocProductionTabProps) {
+export function DocProductionTab({ project, company, concessionaires, states, initialDocuments, docToEdit, onExit }: DocProductionTabProps) {
     // ...
     // Effect to handle external edit requests
     const [lastEditedId, setLastEditedId] = useState<string>('');
@@ -50,10 +51,14 @@ export function DocProductionTab({ project, company, concessionaires, states, in
         setView('form');
     };
 
-    const handleCancel = () => {
-        setView('selector');
-        setSelectedTemplate(null);
-        setInitialFormData({});
+    const handleBack = () => {
+        if (view === 'form') {
+            setView('selector');
+            setSelectedTemplate(null);
+            setInitialFormData({});
+        } else if (onExit) {
+            onExit();
+        }
     };
 
     const handleSuccess = () => {
@@ -65,19 +70,20 @@ export function DocProductionTab({ project, company, concessionaires, states, in
 
     return (
         <div className="space-y-6">
+            <div className="flex items-center">
+                <Button variant="link" onClick={handleBack} className="pl-0 text-muted-foreground hover:text-primary">
+                    <ArrowLeft className="mr-2 h-4 w-4" /> {view === 'form' ? 'Voltar para Modelos' : (onExit ? 'Voltar ao Início' : 'Voltar')}
+                </Button>
+            </div>
+
             {view === 'form' && selectedTemplate ? (
                 <div>
-                    <div className="mb-4">
-                        <Button variant="link" onClick={handleCancel} className="pl-0 text-muted-foreground hover:text-primary">
-                            <ArrowLeft className="mr-2 h-4 w-4" /> Trocar Modelo
-                        </Button>
-                    </div>
                     <DocForm
                         template={selectedTemplate}
                         project={project}
                         company={company}
                         initialData={initialFormData} // Pass reused data
-                        onCancel={handleCancel}
+                        onCancel={handleBack}
                         onSuccess={handleSuccess}
                     />
                 </div>
