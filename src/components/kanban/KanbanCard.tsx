@@ -49,19 +49,24 @@ export function KanbanCardContent({
 }: KanbanCardContentProps) {
     return (
         <div ref={innerRef} style={style} {...dragListeners} {...dragAttributes} className={className}>
-            <Card className="hover:shadow-md transition-all relative">
-                <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity focus-within:opacity-100 data-[state=open]:opacity-100">
+            <Card className="hover:shadow-md transition-all relative group border-slate-200">
+                {/* Header Row: Company Name + Menu */}
+                <div className="flex justify-between items-start p-2 pb-0">
+                    <span className="text-xs font-bold text-blue-900 truncate pr-2 flex-1" title={companyName}>
+                        {companyName}
+                    </span>
+
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-6 w-6 cursor-pointer"
+                                className="h-5 w-5 text-slate-400 hover:text-slate-600 -mt-1 -mr-1"
                                 onPointerDown={(e) => e.stopPropagation()}
                                 onMouseDown={(e) => e.stopPropagation()}
                                 onClick={(e) => e.stopPropagation()}
                             >
-                                <MoreHorizontal className="h-4 w-4" />
+                                <MoreHorizontal className="h-3 w-3" />
                             </Button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
@@ -75,27 +80,26 @@ export function KanbanCardContent({
                     </DropdownMenu>
                 </div>
 
-                <CardHeader className="p-3 pb-1 space-y-1">
-                    <CardTitle className="text-sm font-bold leading-tight text-blue-900 truncate pr-6" title={companyName}>
-                        {companyName}
-                    </CardTitle>
-                    <div className="flex justify-between items-center text-[10px] text-muted-foreground">
-                        <span>{project.number}</span>
-                        <Badge variant="secondary" className="text-[10px] px-1 py-0 h-4 font-normal">
-                            {project.poleCount} Postes
-                        </Badge>
-                    </div>
-                </CardHeader>
+                {/* Sub-header: Number + Badge */}
+                <div className="px-2 pb-1 flex justify-between items-center mt-1">
+                    <span className="text-[10px] text-muted-foreground font-mono bg-slate-100 px-1 rounded">
+                        {project.number}
+                    </span>
+                    <Badge variant="secondary" className="text-[9px] px-1 py-0 h-3.5 font-normal leading-none flex items-center">
+                        {project.poleCount} postes
+                    </Badge>
+                </div>
 
-                <CardContent className="p-3 pt-1 space-y-2">
-                    <div className="flex items-center text-xs text-muted-foreground">
-                        <MapPin className="h-3 w-3 mr-1" />
-                        {project.city}
+                <CardContent className="p-2 pt-0 space-y-1.5">
+                    {/* Location Row */}
+                    <div className="flex items-center text-[10px] text-muted-foreground">
+                        <MapPin className="h-2.5 w-2.5 mr-1 text-slate-400" />
+                        <span className="truncate">{project.city}</span>
                     </div>
 
-                    {/* Embedded Checklist */}
+                    {/* Embedded Checklist (Compact) */}
                     <div
-                        className="bg-white rounded-md p-2 border shadow-sm"
+                        className="bg-slate-50 rounded p-1 border border-slate-100"
                         onPointerDown={(e) => e.stopPropagation()}
                         onMouseDown={(e) => e.stopPropagation()}
                     >
@@ -106,13 +110,12 @@ export function KanbanCardContent({
                         />
                     </div>
 
-                    <div className="pt-0">
-                        <Button variant="ghost" size="sm" className="w-full text-[10px] h-6 text-slate-400 hover:text-slate-600" asChild>
-                            <Link href={`/projetos/${project.id}`}>
-                                Ver detalhes
-                            </Link>
-                        </Button>
-                    </div>
+                    {/* Invisible Link Overlay for Card Click */}
+                    <Link
+                        href={`/projetos/${project.id}`}
+                        className="absolute inset-0 z-0"
+                        title="Ver detalhes"
+                    />
                 </CardContent>
             </Card>
         </div>
