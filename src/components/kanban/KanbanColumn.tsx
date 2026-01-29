@@ -20,11 +20,11 @@ export function KanbanColumn({ id, title, projects, companies, onRemoveProject }
     return (
         <div
             ref={setNodeRef}
-            className="flex-1 min-w-[250px] bg-slate-100/50 rounded-xl p-4 flex flex-col gap-4 border border-slate-200 shadow-sm"
+            className="flex-1 min-w-[250px] bg-muted/40 rounded-xl p-4 flex flex-col gap-4 border border-border shadow-sm"
         >
             <div className="flex items-center justify-between flex-shrink-0">
-                <h3 className="font-semibold text-slate-700">{title}</h3>
-                <span className="bg-white/50 text-slate-600 text-xs px-2 py-1 rounded-full font-medium border border-slate-200 shadow-sm">
+                <h3 className="font-semibold text-foreground/80">{title}</h3>
+                <span className="bg-background text-muted-foreground text-xs px-2 py-1 rounded-full font-medium border border-border shadow-sm">
                     {projects.length}
                 </span>
             </div>
