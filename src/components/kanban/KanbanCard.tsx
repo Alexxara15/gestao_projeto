@@ -61,7 +61,7 @@ export function KanbanCardContent({
                             <Button
                                 variant="ghost"
                                 size="icon"
-                                className="h-5 w-5 text-slate-400 hover:text-slate-600 -mt-1 -mr-1"
+                                className="h-5 w-5 text-slate-400 hover:text-slate-600 -mt-1 -mr-1 relative z-10"
                                 onPointerDown={(e) => e.stopPropagation()}
                                 onMouseDown={(e) => e.stopPropagation()}
                                 onClick={(e) => e.stopPropagation()}
@@ -99,7 +99,7 @@ export function KanbanCardContent({
 
                     {/* Embedded Checklist (Compact) */}
                     <div
-                        className="bg-slate-50 rounded p-1 border border-slate-100"
+                        className="bg-slate-50 rounded p-1 border border-slate-100 relative z-10"
                         onPointerDown={(e) => e.stopPropagation()}
                         onMouseDown={(e) => e.stopPropagation()}
                     >
