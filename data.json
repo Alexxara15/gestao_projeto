@@ -1,0 +1,218 @@
+{
+  "companies": [
+    {
+      "id": "1",
+      "name": "Exemplo Engenharia",
+      "cnpj": "00.000.000/0001-91",
+      "address": "Rua Teste, 123",
+      "techResp": "Eng. Fulano",
+      "email": "contato@exemplo.com",
+      "phone": "(11) 99999-9999"
+    }
+  ],
+  "states": [
+    {
+      "id": "1",
+      "name": "São Paulo",
+      "uf": "SP"
+    },
+    {
+      "id": "2",
+      "name": "Rio de Janeiro",
+      "uf": "RJ"
+    },
+    {
+      "id": "3",
+      "name": "Minas Gerais",
+      "uf": "MG"
+    }
+  ],
+  "concessionaires": [
+    {
+      "id": "1",
+      "name": "Enel SP",
+      "stateId": "1",
+      "requiredDocs": [
+        "Requerimento Padrão",
+        "Projeto Técnico (DWG/PDF)",
+        "ART de Projeto e Execução",
+        "Memorial Descritivo",
+        "Cronograma Físico-Financeiro"
+      ]
+    },
+    {
+      "id": "2",
+      "name": "CPFL",
+      "stateId": "1",
+      "requiredDocs": [
+        "Carta de Solicitação",
+        "Projeto Elétrico",
+        "ART",
+        "Licença Ambiental Simplificada"
+      ]
+    },
+    {
+      "id": "3",
+      "name": "Light",
+      "stateId": "2",
+      "requiredDocs": [
+        "Formulário de Acesso",
+        "Diagrama Unifilar",
+        "Responsabilidade Técnica"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": "e4a88dc8-9adf-44e7-8c07-c45da37adcb9",
+      "number": "PRJ-2026-881",
+      "companyId": "1",
+      "stateId": "2",
+      "concessionaireId": "3",
+      "city": "phgcv",
+      "infraType": "FTTH",
+      "poleCount": 55,
+      "status": "PREPARATION",
+      "createdAt": "2026-01-28T20:32:54.106Z",
+      "documents": [
+        {
+          "id": "4a87f4d2-49cb-4c89-a0c1-6ab88b82b948",
+          "name": "Formulário de Acesso",
+          "required": true,
+          "completed": false
+        },
+        {
+          "id": "f0330dc9-a342-4f12-abda-53166c326306",
+          "name": "Diagrama Unifilar",
+          "required": true,
+          "completed": false
+        },
+        {
+          "id": "0287abcc-2fbf-4e89-93c0-c73788740cc0",
+          "name": "Responsabilidade Técnica",
+          "required": true,
+          "completed": false
+        }
+      ]
+    }
+  ],
+  "generatedDocuments": [
+    {
+      "id": "412ced89-b235-46d4-848b-2128bbbe9952",
+      "projectId": "e4a88dc8-9adf-44e7-8c07-c45da37adcb9",
+      "templateId": "req-enel-sp-01",
+      "templateName": "Requerimento de Análise de Projeto",
+      "data": {
+        "nome_interessado": "Exemplo Engenharia",
+        "cnpj_interessado": "00.000.000/0001-91",
+        "endereco_obra": "phgcv",
+        "qtd_postes": "55",
+        "data_solicitacao": "2005-01-15"
+      },
+      "createdAt": "2026-01-29T01:29:43.570Z",
+      "version": 1,
+      "createdBy": "Usuário Demo",
+      "fileUrl": "/simulated-docs/req-enel-sp-01-1769650183570.pdf"
+    },
+    {
+      "id": "e04df7cd-4b14-4738-93d9-daae7f3d8b34",
+      "projectId": "e4a88dc8-9adf-44e7-8c07-c45da37adcb9",
+      "templateId": "enel-ce-solicitacao-01",
+      "templateName": "Solicitação de Compartilhamento",
+      "data": {
+        "municipio": "Sobral",
+        "data_documento": "2026-01-29",
+        "representante_nome": "|ALEXSANDRO ARAUJO",
+        "empresa_razao_social": "ALANENT LTDA",
+        "empresa_cnpj": "00.000.000/0001-91",
+        "email_contato": "contato@exemplo.com",
+        "endereco_correspondencia": "Rua Teste, 123",
+        "representante_cargo": "SOCIO ADM"
+      },
+      "createdAt": "2026-01-29T01:42:48.657Z",
+      "version": 1,
+      "createdBy": "Usuário Demo",
+      "fileUrl": "/simulated-docs/ENEL_CE_Solicitacao_Compartilhamento_ALANENTLTDA_v1_20260129.pdf"
+    },
+    {
+      "id": "7db78a7d-9cb8-4453-a11b-84ac8d62cea1",
+      "projectId": "e4a88dc8-9adf-44e7-8c07-c45da37adcb9",
+      "templateId": "enel-ce-solicitacao-01",
+      "templateName": "Solicitação de Compartilhamento",
+      "data": {
+        "municipio": "phgcv",
+        "data_documento": "2026-01-29",
+        "representante_nome": "Eng. Fulano",
+        "empresa_razao_social": "Exemplo Engenharia",
+        "empresa_cnpj": "00.000.000/0001-91",
+        "email_contato": "contato@exemplo.com",
+        "endereco_correspondencia": "Rua Teste, 123",
+        "representante_cargo": "nj"
+      },
+      "createdAt": "2026-01-29T02:01:07.393Z",
+      "version": 2,
+      "createdBy": "Usuário Demo",
+      "fileUrl": "/simulated-docs/ENEL_CE_Solicitacao_Compartilhamento_EXEMPLOENGENHAR_v2_20260129.pdf"
+    },
+    {
+      "id": "258ba054-80df-4908-8b7b-de3985df3dae",
+      "projectId": "e4a88dc8-9adf-44e7-8c07-c45da37adcb9",
+      "templateId": "enel-ce-solicitacao-01",
+      "templateName": "Solicitação de Compartilhamento",
+      "data": {
+        "municipio": "Sobral",
+        "data_documento": "2026-01-29",
+        "representante_nome": "Alexsandro Araújo",
+        "empresa_razao_social": "Exemplo Engenharia",
+        "empresa_cnpj": "00.000.000/0001-91",
+        "email_contato": "contato@exemplo.com",
+        "endereco_correspondencia": "Rua Teste, 123",
+        "representante_cargo": "Sócio/Administrador"
+      },
+      "createdAt": "2026-01-29T02:39:18.994Z",
+      "version": 3,
+      "createdBy": "Usuário Demo",
+      "fileUrl": "/generated-docs/ENEL_CE_Solicitacao_Compartilhamento_EXEMPLOENGENHAR_v3_20260129.docx"
+    },
+    {
+      "id": "ca4c9d7e-2ee2-40fd-ab42-640759a420a3",
+      "projectId": "e4a88dc8-9adf-44e7-8c07-c45da37adcb9",
+      "templateId": "enel-ce-solicitacao-01",
+      "templateName": "Solicitação de Compartilhamento",
+      "data": {
+        "municipio": "Sobral",
+        "data_documento": "2026-01-29",
+        "representante_nome": "Alexsandro Araújo",
+        "empresa_razao_social": "Exemplo Engenharia",
+        "empresa_cnpj": "00.000.000/0001-91",
+        "email_contato": "contato@exemplo.com",
+        "endereco_correspondencia": "Rua Teste, 123",
+        "representante_cargo": "Sócio/Administrador"
+      },
+      "createdAt": "2026-01-29T02:41:14.331Z",
+      "version": 4,
+      "createdBy": "Usuário Demo",
+      "fileUrl": "/generated-docs/ENEL_CE_Solicitacao_Compartilhamento_EXEMPLOENGENHAR_v4_20260129.docx"
+    },
+    {
+      "id": "0ffbfa74-4545-4497-bb3b-f3c8b1a91e6d",
+      "projectId": "e4a88dc8-9adf-44e7-8c07-c45da37adcb9",
+      "templateId": "enel-ce-solicitacao-01",
+      "templateName": "Solicitação de Compartilhamento",
+      "data": {
+        "municipio": "Sobral",
+        "data_documento": "2026-01-29",
+        "representante_nome": "Francisco Alexsandro Araújo",
+        "empresa_razao_social": "ALANENT TELECOMUNICACOES LTDA",
+        "empresa_cnpj": "00.000.000/0001-91",
+        "email_contato": "alexsandro.araujo015@gmail.com",
+        "endereco_correspondencia": "Rua Coronel Estanislau Frota 340, Centro,Sobral-CE, CEP:62.010-560",
+        "representante_cargo": "Sócio/Administrador"
+      },
+      "createdAt": "2026-01-29T02:46:54.509Z",
+      "version": 5,
+      "createdBy": "Usuário Demo",
+      "fileUrl": "/generated-docs/ENEL_CE_Solicitacao_Compartilhamento_ALANENTTELECOMU_v5_20260129.docx"
+    }
+  ]
+}
